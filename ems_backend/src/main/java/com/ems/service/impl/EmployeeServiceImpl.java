@@ -76,7 +76,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse getAllEmployeesPaginated(int pageNo, int pageSize, String sortBy, String sortDir) {
 
-        // 1. Configure Sorting Direction
+        // 1. Validate and Configure Sorting
+        List<String> allowedSortFields = List.of("id", "firstName", "lastName", "email");
+        if (sortBy == null || !allowedSortFields.contains(sortBy)) {
+            sortBy = "id"; // Default to id if invalid
+        }
+
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
